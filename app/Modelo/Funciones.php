@@ -146,7 +146,11 @@ class Funciones extends Model {
         }else if ($campo == 'AA') {
             $camp = date('Y');
         }else if ($campo == 'SS') {
-            $camp = date('Y-m-d'); $camp = self::weekOfMonth($camp);
+            $camp = date('Y-m-d'); 
+            $camp = self::weekOfMonth($camp);
+            if ($camp > 5) {
+                $camp = 5;
+            }
         }
 
         if (strlen($camp) < 2) { $camp = "0".$camp; }
@@ -345,6 +349,9 @@ class Funciones extends Model {
             $sentencia = str_replace('@conseDoc', $consecutivoDat->consecutivo, $sentencia);
             $sentencia = str_replace('@conseItem', $consecutivoDat->consecutivo_b, $sentencia);
         }
+
+        $sentencia = str_replace('@fechaInicio', $consulta->fechaInicio, $sentencia);
+        $sentencia = str_replace('@fechaFin', $consulta->fechaFin, $sentencia);
 
         $sentencia = str_replace('@top', $top, $sentencia);
         $sentencia = str_replace('@desdeItems', $consulta->desde_items, $sentencia);

@@ -11,7 +11,6 @@
 </h2>
 </center>
   
-<p>Generación de planos con fecha `{{date('Y-m-d')}}`</p>
   
 <strong>Este mensaje es generado automaticamente, no responder a este mensaje.</strong>
   
