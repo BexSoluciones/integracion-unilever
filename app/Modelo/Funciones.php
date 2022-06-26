@@ -468,11 +468,17 @@ class Funciones extends Model {
             }else{ return $nameExploy.$consPlano['separador']; }
 
         }elseif($planoFuncion->tipo == 'exploy_name_b'){ 
+            $strvalueB = str_replace("  ", " ", $valueB); 
+            $totalVal = explode(' ', $strvalueB);
+            if (count($totalVal) > 1) {
+                $nameExploy = self::deglosarNombre($valueB,2);
+                if ($planoFuncion->tipo_campo == 'texto') {
+                    return " ".$consPlano['entre_columna'].str_pad($nameExploy, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
+                }else{ return $nameExploy.$consPlano['separador']; }
+            }else{
+                return "".$consPlano['separador'];
+            }
 
-            $nameExploy = self::deglosarNombre($valueB,2);
-            if ($planoFuncion->tipo_campo == 'texto') {
-                return " ".$consPlano['entre_columna'].str_pad($nameExploy, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
-            }else{ return $nameExploy.$consPlano['separador']; }
         }else{
             return false;
         }
