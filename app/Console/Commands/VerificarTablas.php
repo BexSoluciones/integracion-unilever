@@ -28,15 +28,19 @@ class VerificarTablas extends Command
 
     public function handle(){
         $listaConsulta = Consulta::where('estado',1)->get();
-        foreach ($listaConsulta as $value) {            
+        echo "=== [ CONSULTANDO LISTA CONSULTA ] ===\n";
+        foreach ($listaConsulta as $value) {         
+            echo "=== [ RECORRIENDO CONSULTA ".$value->tabla_destino." ] ===\n";   
             Consulta::where('codigo', $value->codigo)->update(['prioridad' => 1]); $tabla = $value->tabla_destino;
             if (Schema::hasTable($tabla)) {
                 if ($value->truncate == 1) {
                     $consTabla = new Tabla; $consTabla->getTable(); $consTabla->bind($tabla); $consTabla->truncate();
                 }    
                 if ($value->drop_table == 1) {
+                    echo "=== [ ELIMINANDO TABLA ".$value->tabla_destino." ] ===\n";   
                     Schema::drop($tabla);
                     try {
+                        echo "=== [ CREANDO TABLA ".$value->tabla_destino." ] ===\n";   
                         Schema::create($tabla, function($table){ 
                             $resultado = self::TABLE_SOAP(); 
                             if (is_array($resultado)) {
@@ -54,6 +58,7 @@ class VerificarTablas extends Command
                 }         
             }else{
                 try {
+                    echo "=== [ CREANDO TABLA ".$value->tabla_destino." ] ===\n";   
                     Schema::create($tabla, function($table){ 
                         $resultado = self::TABLE_SOAP(); 
                         if (is_array($resultado)) {
@@ -69,6 +74,7 @@ class VerificarTablas extends Command
                     if ($reg->save()) {}else{ echo 'Excepción capturada registro tabla ´'.$tabla.'´: ', $e->getMessage(), "\n"; }
                 }
             }            
+            echo "=== [ FINALIZANDO CONS TABLA ] ===\n";   
             Consulta::where('codigo', '>', 0)->update(['prioridad' => 0]);
         }   
 

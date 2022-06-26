@@ -86,6 +86,22 @@ class Funciones extends Model {
         return $data;
     }
 
+    public static function contarLineasArchivo($rutaPlano){
+        $num_lineas = 0; $caracteres = 0;
+        $archivo = fopen ($rutaPlano, "r");
+        while (!feof ($archivo)) {
+            //si extraigo una línea del archivo y no es false
+            if ($linea = fgets($archivo)){
+               //acumulo una en la variable número de líneas
+               $num_lineas++;
+               //acumulo el número de caracteres de esta línea
+               $caracteres += strlen($linea);
+            }
+        }
+        fclose ($archivo);
+        return $num_lineas;
+    }
+
     public static function NombreArchivo($consPlano){
         
         $name = NULL;
