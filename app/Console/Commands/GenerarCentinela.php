@@ -24,7 +24,7 @@ class GenerarCentinela extends Command
         foreach ($listaConsulta as $value) {
             $consPlano = Plano::where('codigo',$value->id_plano)->first();
             $dataPlano .= "97".$consPlano['separador'];
-            $dataPlano .= $consPlano['seccion_a'].$consPlano['seccion_b'].$consPlano['extension'].$consPlano['separador'];
+            $dataPlano .= $consPlano['seccion_a'].$consPlano['seccion_b'].$consPlano['separador'];
 
             $rutaPlano = $consPlano['ruta'].$consPlano['seccion_a'].$consPlano['seccion_b'].$consPlano['extension'];
             $totaLineas = Funciones::contarLineasArchivo($rutaPlano);
