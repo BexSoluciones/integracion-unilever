@@ -438,7 +438,7 @@ class Funciones extends Model {
             }else{ return $fech.$consPlano['separador']; }
         }elseif($planoFuncion->tipo == 'fecha_d'){  
             if ($planoFuncion->tipo_campo == 'texto') {
-                $prefijoDia = prefijoDiaSemana();
+                $prefijoDia = self::prefijoDiaSemana();
                 return " ".$consPlano['entre_columna'].str_pad($prefijoDia, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
             }else{ return $diaName.$consPlano['separador']; }
         }elseif($planoFuncion->tipo == 'agregar_cero'){ 
