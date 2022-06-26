@@ -11,7 +11,7 @@ use App\Modelo\Consulta;
 
 class GenerarCentinela extends Command
 {
-    protected $signature = 'integracion:ejecutar-centinela';
+    protected $signature = 'integracion:generar-centinela';
     protected $description = 'Generar archivo centinela de planos generados';
 
     public function __construct(){ parent::__construct(); }
@@ -24,13 +24,12 @@ class GenerarCentinela extends Command
         foreach ($listaConsulta as $value) {
             $consPlano = Plano::where('codigo',$value->id_plano)->first();
             $dataPlano .= "97".$consPlano['separador'];
-            $dataPlano .= $consPlano['seccion_a'].$consPlano['seccion_b'].$consPlano['extension'];
-            $dataPlano .= $consPlano['seccion_a'].$consPlano['seccion_b'].$consPlano['extension'];
+            $dataPlano .= $consPlano['seccion_a'].$consPlano['seccion_b'].$consPlano['extension'].$consPlano['separador'];
 
             $rutaPlano = $consPlano['ruta'].$consPlano['seccion_a'].$consPlano['seccion_b'].$consPlano['extension'];
             $totaLineas = Funciones::contarLineasArchivo($rutaPlano);
 
-            $dataPlano .= $totaLineas.$consPlano['extension']; 
+            $dataPlano .= $totaLineas.$consPlano['extension'].$consPlano['separador']; 
             $dataPlano .= date("Y-m-d")."\n";
 
         }
