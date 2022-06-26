@@ -240,7 +240,7 @@ class Funciones extends Model {
     }
 
     public static function nombreDia($fecha) {
-        $dias = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
+        $dias = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
         $fecha = $dias[date('N', strtotime($fecha))]; 
         return $fecha;
     }
