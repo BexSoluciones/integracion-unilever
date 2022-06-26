@@ -263,8 +263,8 @@ class Funciones extends Model {
         }
     }
 
-    public static function prefijoDiaSemana() {
-        $dia = self::nombreDia(date("Y-m-d")); 
+    public static function prefijoDiaSemana($fecha) {
+        $dia = self::nombreDia($fecha); 
         if ($dia == 'Lunes') {
             return "LU";
         }else if ($dia == 'Martes') {
@@ -422,6 +422,7 @@ class Funciones extends Model {
         $nombreDia = self::nombreDia($valueB); 
         $diaSemana = self::diaSemana($nombreDia); 
         $diaName = self::diaVisita($nombreDia); 
+        $prefijoDia = self::prefijoDiaSemana($valueB);
 
         if($planoFuncion->tipo == 'fecha_a'){ 
             if ($planoFuncion->tipo_campo == 'texto') {
@@ -438,8 +439,8 @@ class Funciones extends Model {
             }else{ return $fech.$consPlano['separador']; }
         }elseif($planoFuncion->tipo == 'fecha_d'){  
             if ($planoFuncion->tipo_campo == 'texto') {
-                $prefijoDia = self::prefijoDiaSemana();
-                return " ".$consPlano['entre_columna'].str_pad($prefijoDia, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
+                
+                return $consPlano['entre_columna'].str_pad($prefijoDia, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
             }else{ return $diaName.$consPlano['separador']; }
         }elseif($planoFuncion->tipo == 'agregar_cero'){ 
             $valret = "0".$valueB;

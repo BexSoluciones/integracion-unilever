@@ -39,16 +39,25 @@ class GenerarPlanos extends Command
             $dataPlan = null; $name_us = null; $sumR = 0;
             foreach ($resCons as $keya => $valueA) {                
 
+                // unset($valueA['codigo']);
+                // unset($valueA['consecutivo_factura']);
+                // unset($valueA['planoRegistro']);
+                // unset($valueA['created_at']);
+                // unset($valueA['updated_at']);
+                
                 echo "===> DATA: $sumR  \n";
 
                 $suma = 0; $array = explode(",", $valueA); $totalExpl = count($array) - 2;
                 if ($consPlano['display_codigo'] == 0) { $sum = 1; }else{ $sum = 2; }    
 
-                // dd($totalExpl);
 
                 if (count($array) > 0) {
+
                     foreach ($array as $keyb => $valueB) {                  
-                        if ($sum != 1) {
+                        
+                        $dataLost = (count($array) - 3);
+
+                        if ($sum != 1 && $sum < $dataLost) {
 
                             $valueB = Funciones::caracterEspecial($valueB);
                             $valueB = Funciones::caracterEspecialSimbol($valueB);
@@ -66,7 +75,7 @@ class GenerarPlanos extends Command
                             // echo "TOTAL: ".(count($tipo) - 2)." / SUMA: $sum / VAL: $valueB \n";
                             // echo "SUMA: $sum \n";
 
-                            if (count($tipo) == $sum || count($tipo) < $sum) { 
+                            if (count($tipo) == $sum || count($tipo) < $sum || ($sum + 1) == $dataLost) { 
                                 // echo "ESPACIADO NULL \n"; 
                                 $separadorPlan = ""; 
                             }else{ 
@@ -144,9 +153,12 @@ class GenerarPlanos extends Command
                 //$rutaFile = "public/plano/".$nombreFile; 
                 $rutaFile = $consPlano['ruta'].$nombreFile; $dataPlan = str_replace('\/',"/", $dataPlan);
                 Funciones::crearTXT($dataPlan,$rutaFile,$nombreFile,$consPlano['ftp'],$consPlano['sftp']);
-                $consTabla->where('planoRegistro',0)->update(['planoRegistro' => 1]);        
+                // $consTabla->where('planoRegistro',0)->update(['planoRegistro' => 1]);        
             }        
 
         }
+
+        $nombreFile = Funciones::NombreArchivo($consPlano); 
+
     }
 }
