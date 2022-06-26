@@ -241,7 +241,7 @@ class Funciones extends Model {
 
     public static function nombreDia($fecha) {
         $dias = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
-        $fecha = $dias[date('N', strtotime('2022-02-05'))]; 
+        $fecha = $dias[date('N', strtotime($fecha))]; 
         return $fecha;
     }
 
@@ -260,6 +260,25 @@ class Funciones extends Model {
             return "6";
         }else if ($dia == 'Domingo') {
             return "7";
+        }
+    }
+
+    public static function prefijoDiaSemana() {
+        $dia = self::nombreDia(date("Y-m-d")); 
+        if ($dia == 'Lunes') {
+            return "LU";
+        }else if ($dia == 'Martes') {
+            return "MA";
+        }else if ($dia == 'Miercoles') {
+            return "MI";
+        }else if ($dia == 'Jueves') {
+            return "JU";
+        }else if ($dia == 'Viernes') {
+            return "VI";
+        }else if ($dia == 'Sabado') {
+            return "SA";
+        }else if ($dia == 'Domingo') {
+            return "DO";
         }
     }
 
@@ -402,7 +421,7 @@ class Funciones extends Model {
         
         $nombreDia = self::nombreDia($valueB); 
         $diaSemana = self::diaSemana($nombreDia); 
-        $diaName = self::diaVisita($nombreDia);
+        $diaName = self::diaVisita($nombreDia); 
 
         if($planoFuncion->tipo == 'fecha_a'){ 
             if ($planoFuncion->tipo_campo == 'texto') {
@@ -417,6 +436,11 @@ class Funciones extends Model {
             if ($planoFuncion->tipo_campo == 'texto') {
                 return " ".$consPlano['entre_columna'].str_pad($fech, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
             }else{ return $fech.$consPlano['separador']; }
+        }elseif($planoFuncion->tipo == 'fecha_d'){  
+            if ($planoFuncion->tipo_campo == 'texto') {
+                $prefijoDia = prefijoDiaSemana();
+                return " ".$consPlano['entre_columna'].str_pad($prefijoDia, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
+            }else{ return $diaName.$consPlano['separador']; }
         }elseif($planoFuncion->tipo == 'agregar_cero'){ 
             $valret = "0".$valueB;
             if ($planoFuncion->tipo_campo == 'texto') {
