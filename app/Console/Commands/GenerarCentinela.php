@@ -29,7 +29,7 @@ class GenerarCentinela extends Command
             $rutaPlano = $consPlano['ruta'].$consPlano['seccion_a'].$consPlano['seccion_b'].$consPlano['extension'];
             $totaLineas = Funciones::contarLineasArchivo($rutaPlano);
 
-            $dataPlano .= $totaLineas.$consPlano['extension'].$consPlano['separador']; 
+            $dataPlano .= $totaLineas.$consPlano['separador']; 
             $dataPlano .= date("Y-m-d")."\n";
 
         }
