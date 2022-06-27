@@ -17,7 +17,7 @@ class Enviar extends Mailable
     public function build()
     {
     	$correo = $this->view('correo.plano')->subject("Alpina Amovil"); 
-    	$ruta = '/var/www/html/integracion-coltabaco/public/plano';
+    	$ruta = '/var/www/html/integracion-alpina-amovil/public/plano';
     	// $ruta = 'public/plano';
 
 	    if (is_dir($ruta)){

@@ -21,8 +21,8 @@ class EnviarPlanos extends Command
         $list = Correo::where('estado',1)->get(); 
         foreach ($list as $data) { $email = new Enviar(); Mail::to($data['correo'])->send($email); }
 
-        $ruta = '/var/www/html/integracion-coltabaco/public/plano';
-    	$ruta_enviado = '/var/www/html/integracion-coltabaco/public/plano_enviado';
+        $ruta = '/var/www/html/integracion-alpina-amovil/public/plano';
+    	$ruta_enviado = '/var/www/html/integracion-alpina-amovil/public/plano_enviado';
 
         // $ruta = 'public/plano';
         // $ruta_enviado = 'public/plano_enviado';
