@@ -470,6 +470,7 @@ class Funciones extends Model {
         }elseif($planoFuncion->tipo == 'exploy_name_b'){ 
             $strvalueB = str_replace("  ", " ", $valueB); 
             $totalVal = explode(' ', $strvalueB);
+            
             if (count($totalVal) > 1) {
                 $nameExploy = self::deglosarNombre($valueB,2);
                 if ($planoFuncion->tipo_campo == 'texto') {

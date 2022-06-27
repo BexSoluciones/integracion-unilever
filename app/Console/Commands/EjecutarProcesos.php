@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use App\Modelo\Tabla;
 use App\Modelo\Funciones;
+use App\Modelo\Consulta;
 
 class EjecutarProcesos extends Command
 {
@@ -34,6 +35,10 @@ class EjecutarProcesos extends Command
         Artisan::call('integracion:guardar-informacion'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
 
         Artisan::call('integracion:generar-planos'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
+
+        Artisan::call('integracion:generar-centinela'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
+
+        Artisan::call('integracion:generar-zip '); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
         
         Artisan::call('integracion:enviar-planos'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
 
