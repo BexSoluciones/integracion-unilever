@@ -16,7 +16,7 @@ class Enviar extends Mailable
 
     public function build()
     {
-    	$correo = $this->view('correo.plano')->subject("Philip Morris International Coltabaco"); 
+    	$correo = $this->view('correo.plano')->subject("Alpina Amovil"); 
     	$ruta = '/var/www/html/integracion-coltabaco/public/plano';
     	// $ruta = 'public/plano';
 
