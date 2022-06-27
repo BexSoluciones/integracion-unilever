@@ -7,7 +7,7 @@
    
 <center>
 <h2 style="padding: 23px;background: #fff;border-bottom: 6px #f15828 solid;">
-	<a href="#" style="color: #050808;"> Planos Coltabaco : Bexsoluciones</a>
+	<a href="#" style="color: #050808;"> Planos Alpina Amovil : Bexsoluciones</a>
 </h2>
 </center>
   
