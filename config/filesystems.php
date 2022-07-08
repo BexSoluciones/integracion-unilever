@@ -67,10 +67,10 @@ return [
 
         'ftp' => [
             'driver' => env('FTP_DRIVER','ftp'),
-            'host' => env('FTP_HOST','www.atrespaldo.com'),
-            'username' => env('FTP_USERNAME','pandapan'),
-            'password' => env('FTP_PASSWORD','pruebasPandapan2021$'),
-            // 'port' => env('FTP_PORT',21),
+            'host' => env('FTP_HOST','bi.amovil.co'),
+            'username' => env('FTP_USERNAME','alp_pandan'),
+            'password' => env('FTP_PASSWORD','Alpina.2020#1%'),
+            'port' => env('FTP_PORT',30),
             // 'root' => env('FTP_ROOT',''),
             // 'passive' => env('FTP_PASSIVE',true),
             // 'ssl' => env('FTP_SSL',true),
