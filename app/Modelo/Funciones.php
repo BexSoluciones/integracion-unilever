@@ -86,22 +86,6 @@ class Funciones extends Model {
         return $data;
     }
 
-    public static function contarLineasArchivo($rutaPlano){
-        $num_lineas = 0; $caracteres = 0;
-        $archivo = fopen ($rutaPlano, "r");
-        while (!feof ($archivo)) {
-            //si extraigo una línea del archivo y no es false
-            if ($linea = fgets($archivo)){
-               //acumulo una en la variable número de líneas
-               $num_lineas++;
-               //acumulo el número de caracteres de esta línea
-               $caracteres += strlen($linea);
-            }
-        }
-        fclose ($archivo);
-        return $num_lineas;
-    }
-
     public static function NombreArchivo($consPlano){
         
         $name = NULL;
@@ -240,8 +224,8 @@ class Funciones extends Model {
     }
 
     public static function nombreDia($fecha) {
-        $dias = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
-        $fecha = $dias[date('N', strtotime($fecha))]; 
+        $dias = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
+        $fecha = $dias[date('N', strtotime('2022-02-05'))]; 
         return $fecha;
     }
 
@@ -260,25 +244,6 @@ class Funciones extends Model {
             return "6";
         }else if ($dia == 'Domingo') {
             return "7";
-        }
-    }
-
-    public static function prefijoDiaSemana($fecha) {
-        $dia = self::nombreDia($fecha); 
-        if ($dia == 'Lunes') {
-            return "LU";
-        }else if ($dia == 'Martes') {
-            return "MA";
-        }else if ($dia == 'Miercoles') {
-            return "MI";
-        }else if ($dia == 'Jueves') {
-            return "JU";
-        }else if ($dia == 'Viernes') {
-            return "VI";
-        }else if ($dia == 'Sabado') {
-            return "SA";
-        }else if ($dia == 'Domingo') {
-            return "DO";
         }
     }
 
@@ -413,7 +378,7 @@ class Funciones extends Model {
     }
 
     public static function caracterEspecialSimbol($val){
-        $char = str_replace(['ñ','Ñ',"'",'?','/','*','¡','¿','[',']','{','}','^','¬','|','°','!','"','$','%','&','(',')','=',',','_','>','<','@'], ['n','N',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '], $val);
+        $char = str_replace(['ñ','Ñ',"'",'?','/','*','¡','¿','[',']','{','}','^','¬','|','°','!','"','$','%','&','(',')','=',',','.','-','_','>','<','@'], ['n','N',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '], $val);
         return $char;
     }
 
@@ -421,8 +386,7 @@ class Funciones extends Model {
         
         $nombreDia = self::nombreDia($valueB); 
         $diaSemana = self::diaSemana($nombreDia); 
-        $diaName = self::diaVisita($nombreDia); 
-        $prefijoDia = self::prefijoDiaSemana($valueB);
+        $diaName = self::diaVisita($nombreDia);
 
         if($planoFuncion->tipo == 'fecha_a'){ 
             if ($planoFuncion->tipo_campo == 'texto') {
@@ -437,11 +401,6 @@ class Funciones extends Model {
             if ($planoFuncion->tipo_campo == 'texto') {
                 return " ".$consPlano['entre_columna'].str_pad($fech, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
             }else{ return $fech.$consPlano['separador']; }
-        }elseif($planoFuncion->tipo == 'fecha_d'){  
-            if ($planoFuncion->tipo_campo == 'texto') {
-                
-                return $consPlano['entre_columna'].str_pad($prefijoDia, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
-            }else{ return $diaName.$consPlano['separador']; }
         }elseif($planoFuncion->tipo == 'agregar_cero'){ 
             $valret = "0".$valueB;
             if ($planoFuncion->tipo_campo == 'texto') {
@@ -468,18 +427,11 @@ class Funciones extends Model {
             }else{ return $nameExploy.$consPlano['separador']; }
 
         }elseif($planoFuncion->tipo == 'exploy_name_b'){ 
-            $strvalueB = str_replace("  ", " ", $valueB); 
-            $totalVal = explode(' ', $strvalueB);
-            
-            if (count($totalVal) > 1) {
-                $nameExploy = self::deglosarNombre($valueB,2);
-                if ($planoFuncion->tipo_campo == 'texto') {
-                    return " ".$consPlano['entre_columna'].str_pad($nameExploy, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
-                }else{ return $nameExploy.$consPlano['separador']; }
-            }else{
-                return "".$consPlano['separador'];
-            }
 
+            $nameExploy = self::deglosarNombre($valueB,2);
+            if ($planoFuncion->tipo_campo == 'texto') {
+                return " ".$consPlano['entre_columna'].str_pad($nameExploy, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
+            }else{ return $nameExploy.$consPlano['separador']; }
         }else{
             return false;
         }
