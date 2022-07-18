@@ -26,9 +26,9 @@ class EjecutarProcesos extends Command
 
         $consTabla = new Tabla; $consTabla->getTable(); $consTabla->bind("tbl_consulta"); 
         
-        // if ($consTabla->where('codigo','>',0)->update(['fechaInicio' => $fechaInicio, 'fechaFin' => $fechaFin])) {
-        //     echo "FECHAS CONSULTAS ACTUALIZADAS: INICIO[".$fechaInicio."] / FIN[".$fechaFin."] \n";
-        // }
+        if ($consTabla->where('codigo','>',0)->update(['fechaInicio' => $fechaInicio, 'fechaFin' => $fechaFin])) {
+            echo "FECHAS CONSULTAS ACTUALIZADAS: INICIO[".$fechaInicio."] / FIN[".$fechaFin."] \n";
+        }
 
         Artisan::call('integracion:verificar-tipo-documento'); // CONSULTA INVENTARIO EN BODEGAS DE LOS PRODUCTOS DE PEDIDOS APROBADOS 
 
@@ -36,7 +36,7 @@ class EjecutarProcesos extends Command
 
         Artisan::call('integracion:generar-planos'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
 
-        Artisan::call('integracion:generar-centinela'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
+        // Artisan::call('integracion:generar-centinela'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
 
         // Artisan::call('integracion:generar-zip'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
         
