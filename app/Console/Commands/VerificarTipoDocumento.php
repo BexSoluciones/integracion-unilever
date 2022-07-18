@@ -60,12 +60,12 @@ class VerificarTipoDocumento extends Command
 
                                 if ($encontradoValuer == false) {
                                     if (ConsultaConsecutivo::insert(['consulta' => $tablaConsultada->codigo,'tipo_documento' => $valRes,'consecutivo' => $tablaConsultada->consecutivo, 'campo_consecutivo' => $tablaConsultada->campo_consecutivo,'consecutivo_b' => $tablaConsultada->consecutivo_b,'campo_consecutivo_b' => $tablaConsultada->campo_consecutivo_b])) {
-                                        echo "Nuevo registro de tipo = $valRes , consecutivo 1 , tabla = $tablaConsultada->tabla_destino \n";
+                                        echo "=> Nuevo registro de tipo = $valRes , consecutivo 1 , tabla = $tablaConsultada->tabla_destino \n";
                                     }else{
-                                        echo "Hubo un error al registrar \n";
+                                        echo "=> Hubo un error al registrar \n";
                                     }
                                 }else{
-                                    echo "El tipo documento = $valRes , ya se encuentra registrado en la consulta tabla = $tablaConsultada->tabla_destino \n";
+                                    echo "=> El tipo documento = $valRes , ya se encuentra registrado en la consulta tabla = $tablaConsultada->tabla_destino \n";
                                 }
 
                             }
@@ -74,10 +74,10 @@ class VerificarTipoDocumento extends Command
                     }
 
                     
-                }
+                }else{ echo "=> No se encontraron elementos en el array consultado [SOAP] \n"; }
 
             }
-        }
+        }else{ echo "=> No se econtrarón consultas habilitados \n"; }
     }
 
         
