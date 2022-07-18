@@ -40,7 +40,7 @@ class VerificarTipoDocumento extends Command
 
                 $sentencia = Funciones::ParametroSentencia($value,$dataConexion,false,$busqueda_alterna,null);
                 $xml = Funciones::consultaStructuraXML($dataConexion->conexion,$dataConexion->cia,$dataConexion->proveedor,$dataConexion->usuario,$dataConexion->clave,$sentencia,$dataConexion->consulta,1,0);
-                dd($xml);
+                print_r($xml);
                 $resultado = Funciones::SOAP($dataConexion->url, $xml, $value->tabla_destino);
 
                 if (is_array($resultado)) { 
