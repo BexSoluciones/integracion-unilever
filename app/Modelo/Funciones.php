@@ -325,7 +325,6 @@ class Funciones extends Model {
             try {
                 $client = new \SoapClient($url, $parametro);
                 $result = $client->EjecutarConsultaXML($parametro)->EjecutarConsultaXMLResult->any; $any = simplexml_load_string($result);
-                dd($result);
                 if (@is_object($any->NewDataSet->Resultado)) { return Funciones::convertirObjetosArrays($any->NewDataSet->Resultado); }else{ $terminar = 0; }
 
                 if (@$any->NewDataSet->Table) {
@@ -337,7 +336,7 @@ class Funciones extends Model {
                     }
                 }  
             }catch (\Exception $e){
-                dd($e->getMessage());
+            
                 $error = self::errorSOAP($e->getMessage());
                 if ($error == true) {
                     $reg = new LogTable; $reg->descripcion =  '´'.$table.'´ => '.$e->getMessage();
