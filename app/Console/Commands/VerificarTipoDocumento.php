@@ -41,7 +41,8 @@ class VerificarTipoDocumento extends Command
                 $sentencia = Funciones::ParametroSentencia($value,$dataConexion,false,$busqueda_alterna,null);
                 $xml = Funciones::consultaStructuraXML($dataConexion->conexion,$dataConexion->cia,$dataConexion->proveedor,$dataConexion->usuario,$dataConexion->clave,$sentencia,$dataConexion->consulta,1,0);
                 $resultado = Funciones::SOAP($dataConexion->url, $xml, $value->tabla_destino);
-
+                // dd($resultado);
+                
                 if (is_array($resultado)) { 
 
                     echo "<br>================= $value->tabla_destino ================================<br>\n"; 
@@ -59,10 +60,12 @@ class VerificarTipoDocumento extends Command
                                 }                            
 
                                 if ($encontradoValuer == false) {
-                                    if (ConsultaConsecutivo::insert(['consulta' => $tablaConsultada->codigo,'tipo_documento' => $valRes,'consecutivo' => $tablaConsultada->consecutivo, 'campo_consecutivo' => $tablaConsultada->campo_consecutivo,'consecutivo_b' => $tablaConsultada->consecutivo_b,'campo_consecutivo_b' => $tablaConsultada->campo_consecutivo_b])) {
-                                        echo "Nuevo registro de tipo = $valRes , consecutivo 1 , tabla = $tablaConsultada->tabla_destino \n";
-                                    }else{
-                                        echo "Hubo un error al registrar \n";
+                                    if ($valRes != "NCN" && $valRes != "NCE") {
+                                        if (ConsultaConsecutivo::insert(['consulta' => $tablaConsultada->codigo,'tipo_documento' => $valRes,'consecutivo' => $tablaConsultada->consecutivo, 'campo_consecutivo' => $tablaConsultada->campo_consecutivo,'consecutivo_b' => $tablaConsultada->consecutivo_b,'campo_consecutivo_b' => $tablaConsultada->campo_consecutivo_b])) {
+                                            echo "Nuevo registro de tipo = $valRes , consecutivo 1 , tabla = $tablaConsultada->tabla_destino \n";
+                                        }else{
+                                            echo "Hubo un error al registrar \n";
+                                        }
                                     }
                                 }else{
                                     echo "El tipo documento = $valRes , ya se encuentra registrado en la consulta tabla = $tablaConsultada->tabla_destino \n";
@@ -77,7 +80,7 @@ class VerificarTipoDocumento extends Command
                 }
 
             }
-        }
+        }else{ echo "=> No se encontraron consultas disponibles \n"; }
     }
 
         
