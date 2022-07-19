@@ -284,18 +284,12 @@ class Funciones extends Model {
     }
 
     // EJECUTA CONEXION SOAP CON LA URL DE CONEXION CONSULTADA Y LA ESTRUCTURA XML CREADA ANTERIORMENTE
-    public static function SOAP($url, $parametro=null, $table){
+    public static function SOAP($url, $parametro, $table){
         $terminar = 1;
         do{
             try {
-
-                $parm['printTipoError'] = 1;
-                $parm['cache_wsdl'] = 0;        
-                $parm['pvstrxmlParametros'] = '<Consulta><NombreConexion>UnoEE_Pandapan_Real</NombreConexion><IdCia>2</IdCia><IdProveedor>PIMOVIL</IdProveedor><IdConsulta>SIESA</IdConsulta><Usuario>unoee importaciones</Usuario><Clave>4ntaresstar</Clave><Parametros><Sql>SET QUOTED_IDENTIFIER OFF; SELECT DISTINCT TOP 1 t350_co_docto_contable.f350_id_tipo_docto FROM t350_co_docto_contable SET QUOTED_IDENTIFIER ON;</Sql></Parametros></Consulta>';
-
-                // dd($parm);
-                $client = new \SoapClient($url, $parm);
-                $result = $client->EjecutarConsultaXML($parm)->EjecutarConsultaXMLResult->any; $any = simplexml_load_string($result);
+                $client = new \SoapClient($url, $parametro);
+                $result = $client->EjecutarConsultaXML($parametro)->EjecutarConsultaXMLResult->any; $any = simplexml_load_string($result);
                 if (@is_object($any->NewDataSet->Resultado)) { return Funciones::convertirObjetosArrays($any->NewDataSet->Resultado); }else{ $terminar = 0; }
 
                 if (@$any->NewDataSet->Table) {

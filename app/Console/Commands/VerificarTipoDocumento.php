@@ -40,6 +40,7 @@ class VerificarTipoDocumento extends Command
 
                 $sentencia = Funciones::ParametroSentencia($value,$dataConexion,false,$busqueda_alterna,null);
                 $xml = Funciones::consultaStructuraXML($dataConexion->conexion,$dataConexion->cia,$dataConexion->proveedor,$dataConexion->usuario,$dataConexion->clave,$sentencia,$dataConexion->consulta,1,0);
+                // print_r($xml);
                 $resultado = Funciones::SOAP($dataConexion->url, $xml, $value->tabla_destino);
                 // dd($resultado);
                 
@@ -48,7 +49,7 @@ class VerificarTipoDocumento extends Command
                     echo "<br>================= $value->tabla_destino ================================<br>\n"; 
 
                     foreach ($listaConsultaTablas as $tablaConsultada) {
-                        $consecutivosTabla = ConsultaConsecutivo::where('consulta',$tablaConsultada->codigo)->get();                        
+                        $consecutivosTabla = ConsultaConsecutivo::where('consulta',$tablaConsultada->codigo)->get();                    
 
                         foreach ($resultado as $resKey => $valres) {
                             foreach ($valres as $key => $valuer) {
@@ -57,9 +58,12 @@ class VerificarTipoDocumento extends Command
                                 $encontradoValuer = false; 
                                 if (count($consecutivosTabla) > 0) {
                                     foreach ($consecutivosTabla as $valueConsecutivo) { if ($valRes == $valueConsecutivo->tipo_documento) { $encontradoValuer = true; } }
-                                }                            
+                                }   
+
+                                echo "=> DOC: ".$valRes." \n";                         
 
                                 if ($encontradoValuer == false) {
+
                                     if ($valRes != "NCN" && $valRes != "NCE") {
                                         if (ConsultaConsecutivo::insert(['consulta' => $tablaConsultada->codigo,'tipo_documento' => $valRes,'consecutivo' => $tablaConsultada->consecutivo, 'campo_consecutivo' => $tablaConsultada->campo_consecutivo,'consecutivo_b' => $tablaConsultada->consecutivo_b,'campo_consecutivo_b' => $tablaConsultada->campo_consecutivo_b])) {
                                             echo "Nuevo registro de tipo = $valRes , consecutivo 1 , tabla = $tablaConsultada->tabla_destino \n";
