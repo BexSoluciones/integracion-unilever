@@ -27,6 +27,22 @@ class Funciones extends Model {
         return Schema::getColumnListing($table);
     }
 
+     public static function contarLineasArchivo($rutaPlano){
+        $num_lineas = 0; $caracteres = 0;
+        $archivo = fopen ($rutaPlano, "r");
+        while (!feof ($archivo)) {
+            //si extraigo una línea del archivo y no es false
+            if ($linea = fgets($archivo)){
+               //acumulo una en la variable número de líneas
+               $num_lineas++;
+               //acumulo el número de caracteres de esta línea
+               $caracteres += strlen($linea);
+            }
+        }
+        fclose ($archivo);
+        return $num_lineas;
+    }
+
     public static function deglosarNombre($nombre,$position){
         $name = str_replace("  ", " ", $nombre); 
         $nameEXPLODE = explode(" ", $name); 
@@ -224,9 +240,28 @@ class Funciones extends Model {
     }
 
     public static function nombreDia($fecha) {
-        $dias = array('Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado');
-        $fecha = $dias[date('N', strtotime('2022-02-05'))]; 
+        $dias = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
+        $fecha = $dias[date('N', strtotime($fecha))]; 
         return $fecha;
+    }
+
+    public static function prefijoDiaSemana($fecha) {
+        $dia = self::nombreDia($fecha);
+        if ($dia == 'Lunes') {
+            return "LU";
+        }else if ($dia == 'Martes') {
+            return "MA";
+        }else if ($dia == 'Miercoles') {
+            return "MI";
+        }else if ($dia == 'Jueves') {
+            return "JU";
+        }else if ($dia == 'Viernes') {
+            return "VI";
+        }else if ($dia == 'Sabado') {
+            return "SA";
+        }else if ($dia == 'Domingo') {
+            return "DO";
+        }
     }
 
     public static function diaSemana($dia) {
@@ -387,6 +422,7 @@ class Funciones extends Model {
         $nombreDia = self::nombreDia($valueB); 
         $diaSemana = self::diaSemana($nombreDia); 
         $diaName = self::diaVisita($nombreDia);
+        $prefijoDia = self::prefijoDiaSemana($valueB);
 
         if($planoFuncion->tipo == 'fecha_a'){ 
             if ($planoFuncion->tipo_campo == 'texto') {
@@ -401,6 +437,10 @@ class Funciones extends Model {
             if ($planoFuncion->tipo_campo == 'texto') {
                 return " ".$consPlano['entre_columna'].str_pad($fech, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
             }else{ return $fech.$consPlano['separador']; }
+        }elseif($planoFuncion->tipo == 'fecha_d'){  
+            if ($planoFuncion->tipo_campo == 'texto') {
+                return $consPlano['entre_columna'].str_pad($prefijoDia, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
+            }else{ return $diaName.$consPlano['separador']; }
         }elseif($planoFuncion->tipo == 'agregar_cero'){ 
             $valret = "0".$valueB;
             if ($planoFuncion->tipo_campo == 'texto') {
@@ -428,10 +468,16 @@ class Funciones extends Model {
 
         }elseif($planoFuncion->tipo == 'exploy_name_b'){ 
 
-            $nameExploy = self::deglosarNombre($valueB,2);
-            if ($planoFuncion->tipo_campo == 'texto') {
-                return " ".$consPlano['entre_columna'].str_pad($nameExploy, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
-            }else{ return $nameExploy.$consPlano['separador']; }
+            $strvalueB = str_replace("  ", " ", $valueB); 
+            $totalVal = explode(' ', $strvalueB);
+            if (count($totalVal) > 1) {
+                $nameExploy = self::deglosarNombre($valueB,2);
+                if ($planoFuncion->tipo_campo == 'texto') {
+                    return " ".$consPlano['entre_columna'].str_pad($nameExploy, $planoFuncion->longitud).$consPlano['entre_columna'].$consPlano['separador'];
+                }else{ return $nameExploy.$consPlano['separador']; }
+            }else{
+                return "".$consPlano['separador'];
+            }
         }else{
             return false;
         }
