@@ -241,12 +241,15 @@ class Funciones extends Model {
 
     public static function nombreDia($fecha) {
         $dias = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
+        // dd("fe".$fecha);
+        // dd(date('N', strtotime($fecha)));
         $fecha = $dias[date('N', strtotime($fecha))]; 
         return $fecha;
     }
 
     public static function prefijoDiaSemana($fecha) {
         $dia = self::nombreDia($fecha);
+        // dd("Fecha:".$fecha."| DIA:".$dia);
         if ($dia == 'Lunes') {
             return "LU";
         }else if ($dia == 'Martes') {
@@ -413,13 +416,15 @@ class Funciones extends Model {
     }
 
     public static function caracterEspecialSimbol($val){
-        $char = str_replace(['ñ','Ñ',"'",'?','/','*','¡','¿','[',']','{','}','^','¬','|','°','!','"','$','%','&','(',')','=',',','.','-','_','>','<','@'], ['n','N',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '], $val);
+        $char = str_replace(['ñ','Ñ',"'",'?','/','*','¡','¿','[',']','{','}','^','¬','|','°','!','"','$','%','&','(',')','=',',','.','_','>','<','@'], ['n','N',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '], $val);
         return $char;
     }
 
     public static function condicionPlano($planoFuncion,$valueB,$name_us,$consPlano){
         
+        // dd("N:".$valueB);
         $nombreDia = self::nombreDia($valueB); 
+
         $diaSemana = self::diaSemana($nombreDia); 
         $diaName = self::diaVisita($nombreDia);
         $prefijoDia = self::prefijoDiaSemana($valueB);
