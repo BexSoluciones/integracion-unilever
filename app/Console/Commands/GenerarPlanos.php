@@ -34,18 +34,22 @@ class GenerarPlanos extends Command
                 // $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
                 if ($value->tabla_destino == "tbl_ws_union_ventas") {
                     $resCons = $consTabla->where('planoRegistro',0)->groupBy('FECHA','CODIGO_CLIENTE','ZONA','CODIGO_PRODUCTO')->orderBy($value->orderBy,$value->orderType)->get();
+                    dd("#1".$resCons);
                 }else{
                     $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
+                    dd("#2".$resCons);
                 }
             }else{
                 if ($value->tabla_destino == "tbl_ws_union_ventas") {
                     $resCons = $consTabla->where('planoRegistro',0)->groupBy('FECHA','CODIGO_CLIENTE','ZONA','CODIGO_PRODUCTO')->orderBy($value->orderBy,$value->orderType)->get();
+                    dd("#3".$resCons);
                 }else{
                     $resCons = $consTabla->where('planoRegistro',0)->groupBy($value->group_by)->orderBy($value->orderBy,$value->orderType)->get();
+                    dd("#4".$resCons);
                 }
             }
 
-            dd($resCons);
+            
 
             $dataPlan = null; $name_us = null; $sumR = 0;
             foreach ($resCons as $keya => $valueA) {                
