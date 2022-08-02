@@ -8,6 +8,7 @@ use App\Modelo\Tabla;
 use App\Modelo\Funciones;
 use App\Modelo\Plano;
 use App\Modelo\Consulta;
+use Illuminate\Support\Facades\Storage;
 
 use ZipArchive;
 
@@ -22,6 +23,7 @@ class GenerarZip extends Command
         
         $zip = new ZipArchive();
         $nombreZip = date("Ymd")."_"."D000086"; 
+        $nombreZipFTP = date("Ymd")."_"."D000086.zip"; 
         $ruta = 'public/plano/';
         $ruta_enviado = 'public/plano_enviado/';
         $nombreArchivoZip = $ruta.$nombreZip.".zip";
@@ -51,6 +53,19 @@ class GenerarZip extends Command
 		// No olvides cerrar el archivo
 		$resultado = $zip->close();
 
+		if ($resultado) {
+		    echo "=> Archivo creado \n";
+		    if (Storage::disk('ftp')->put($nombreZipFTP, file_get_contents($nombreArchivoZip))) {
+		    	echo "=> Subio el archivo FTP \n";
+		    }else{
+		    	echo "=> Hubo un problema al subir archivo FTP \n";
+		    }
+		} else {
+		    echo "Error creando archivo\n";
+		}
+
+		echo "=> Se Movio archivos a enviados \n";
+
 		if (is_dir($ruta)){
 	        $gestor = opendir($ruta);
 	        while (($archivo = readdir($gestor)) !== false)  {	                
@@ -58,7 +73,7 @@ class GenerarZip extends Command
 	            $ruta_completa = $ruta . "/" . $archivo;
 	            $ruta_completa_nueva = $ruta_enviado . "/" . $archivo;
 	            $isZip = explode('.', $archivo);
-	            if ($archivo != "." && $archivo != ".." && $isZip[1] != 'zip') {
+	            if ($archivo != "." && $archivo != ".." ) {
 	                rename($ruta_completa, $ruta_completa_nueva);
 	            }else{
                     echo "NO SE ENCONTRO ARCHIVOS \n";
@@ -69,11 +84,7 @@ class GenerarZip extends Command
             echo "NO SE ENCONTRO LA RUTA \n";
         }
 
-		if ($resultado) {
-		    echo "Archivo creado\n";
-		} else {
-		    echo "Error creando archivo\n";
-		}
+
 
     }  
 

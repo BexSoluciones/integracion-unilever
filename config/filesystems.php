@@ -71,6 +71,7 @@ return [
             'username' => env('FTP_USERNAME','alp_pandan'),
             'password' => env('FTP_PASSWORD','Alpina.2020#1%'),
             'port' => env('FTP_PORT',30),
+            'ignorePassiveAddress' => true,
             // 'root' => env('FTP_ROOT',''),
             // 'passive' => env('FTP_PASSIVE',true),
             // 'ssl' => env('FTP_SSL',true),
