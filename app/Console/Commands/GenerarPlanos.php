@@ -178,7 +178,7 @@ class GenerarPlanos extends Command
                     // echo "PLANO ANT FUNCTION: $dataPlan \n";
                     // echo "\n";
 
-                    if ($consPlano['salto_linea'] == 1) { $dataPlan .= "\n\r"; }
+                    if ($consPlano['salto_linea'] == 1) { $dataPlan .= "\r\n"; }
                 }   $sumR++;
 
             }
