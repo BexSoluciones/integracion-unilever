@@ -32,6 +32,11 @@ class GenerarPlanos extends Command
 
             if ($value->group_by == '') {
                 $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
+                if ($value->tabla_destino == "tbl_ws_union_ventas") {
+                    $resCons = $consTabla->where('planoRegistro',0)->groupBy('FECHA','CODIGO_CLIENTE','ZONA','CODIGO_PRODUCTO')->orderBy($value->orderBy,$value->orderType)->get();
+                }else{
+                    $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
+                }
             }else{
                 if ($value->tabla_destino == "tbl_ws_union_ventas") {
                     $resCons = $consTabla->where('planoRegistro',0)->groupBy('FECHA','CODIGO_CLIENTE','ZONA','CODIGO_PRODUCTO')->orderBy($value->orderBy,$value->orderType)->get();
