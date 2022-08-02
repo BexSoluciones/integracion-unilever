@@ -33,7 +33,11 @@ class GenerarPlanos extends Command
             if ($value->group_by == '') {
                 $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
             }else{
-                $resCons = $consTabla->where('planoRegistro',0)->groupBy($value->group_by)->orderBy($value->orderBy,$value->orderType)->get();
+                if ($value->tabla_destino == "tbl_ws_union_ventas") {
+                    $resCons = $consTabla->where('planoRegistro',0)->groupBy('FECHA','CODIGO_CLIENTE','ZONA','CODIGO_PRODUCTO')->orderBy($value->orderBy,$value->orderType)->get();
+                }else{
+                    $resCons = $consTabla->where('planoRegistro',0)->groupBy($value->group_by)->orderBy($value->orderBy,$value->orderType)->get();
+                }
             }
 
             $dataPlan = null; $name_us = null; $sumR = 0;
@@ -54,6 +58,8 @@ class GenerarPlanos extends Command
                 if (count($array) > 0) {
 
                     foreach ($array as $keyb => $valueB) {                  
+
+                        // dd($keyb);
                         
                         $dataLost = (count($array) - 3);
 
@@ -128,10 +134,27 @@ class GenerarPlanos extends Command
                                     $tipoR = Funciones::ReplaceText($tipo[$suma]);  
                                     $longitudR = Funciones::ReplaceText($longitud[$suma]);
                                     
+
                                     if ($tipoR == 'texto') {
+                                        if ($keyb == "PEDIDO") {
+                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('PEDIDO');
+                                        }else if ($keyb == "DESPACHADO") {
+                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('DESPACHADO');
+                                        }else if ($keyb == "VALOR") {
+                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('VALOR');
+                                        }
                                         $dataResplan = substr($valueB, 0, $longitudR);
                                         $dataPlan .= "".$consPlano['entre_columna'].str_pad($dataResplan, 0).$consPlano['entre_columna'].$separadorPlan;
-                                    }else{ $dataPlan .= $valueB.$separadorPlan; }
+                                    }else{ 
+                                        if ($keyb == "PEDIDO") {
+                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('PEDIDO');
+                                        }else if ($keyb == "DESPACHADO") {
+                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('DESPACHADO');
+                                        }else if ($keyb == "VALOR") {
+                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('VALOR');
+                                        }
+                                        $dataPlan .= $valueB.$separadorPlan; 
+                                    }
 
                                 }   
                             }
