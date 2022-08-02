@@ -40,6 +40,8 @@ class GenerarPlanos extends Command
                 }
             }
 
+            dd($resCons);
+
             $dataPlan = null; $name_us = null; $sumR = 0;
             foreach ($resCons as $keya => $valueA) {                
 
