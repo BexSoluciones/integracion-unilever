@@ -169,8 +169,6 @@ class GenerarPlanos extends Command
                                             
                                         }else if ($keyb == 7) {
                                             $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('DESPACHADO');
-                                        }else if ($keyb == 9) {
-                                            $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('VALOR');
                                         }
                                         $dataResplan = substr($valueB, 0, $longitudR);
                                         $dataPlan .= "".$consPlano['entre_columna'].str_pad($dataResplan, 0).$consPlano['entre_columna'].$separadorPlan;
@@ -182,8 +180,6 @@ class GenerarPlanos extends Command
                                            
                                         }else if ($keyb == 7) {
                                             $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('DESPACHADO');
-                                        }else if ($keyb == 9) {
-                                            $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('VALOR');
                                         }
                                         $dataPlan .= $valueB.$separadorPlan; 
                                     }
