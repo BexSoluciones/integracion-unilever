@@ -69,6 +69,15 @@ class GenerarPlanos extends Command
 
                 if (count($array) > 0) {
                     // dd($array);
+
+                    $valConsA = Funciones::caracterEspecial($array[2]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
+
+                    $valConsB = Funciones::caracterEspecial($array[3]); $valConsB = Funciones::caracterEspecialSimbol($valConsB); $posConsB = strpos($valConsB, ':'); $posConsB++; $valConsB = substr($valConsB, $posConsB);  $cons_CODIGO_CLIENTE = Funciones::ReplaceText($valConsB);
+
+                    $valConsC = Funciones::caracterEspecial($array[4]); $valConsC = Funciones::caracterEspecialSimbol($valConsC); $posConsC = strpos($valConsC, ':'); $posConsC++; $valConsC = substr($valConsC, $posConsC);  $cons_ZONA = Funciones::ReplaceText($valConsC);
+
+                    $valConsD = Funciones::caracterEspecial($array[5]); $valConsD = Funciones::caracterEspecialSimbol($valConsD); $posConsD = strpos($valConsD, ':'); $posConsD++; $valConsD = substr($valConsD, $posConsD);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsD);
+
                     foreach ($array as $keyb => $valueB) {                  
 
                         // dd($keyb);
@@ -149,13 +158,7 @@ class GenerarPlanos extends Command
 
                                     // $keyb / 6 = PEDIDO, 7 = DESPACHADO, 9 = VALOR
 
-                                    $valConsA = Funciones::caracterEspecial($array[2]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
-
-                                    $valConsB = Funciones::caracterEspecial($array[3]); $valConsB = Funciones::caracterEspecialSimbol($valConsB); $posConsB = strpos($valConsB, ':'); $posConsB++; $valConsB = substr($valConsB, $posConsB);  $cons_CODIGO_CLIENTE = Funciones::ReplaceText($valConsB);
-
-                                    $valConsC = Funciones::caracterEspecial($array[4]); $valConsC = Funciones::caracterEspecialSimbol($valConsC); $posConsC = strpos($valConsC, ':'); $posConsC++; $valConsC = substr($valConsC, $posConsC);  $cons_ZONA = Funciones::ReplaceText($valConsC);
-
-                                    $valConsD = Funciones::caracterEspecial($array[5]); $valConsD = Funciones::caracterEspecialSimbol($valConsD); $posConsD = strpos($valConsD, ':'); $posConsD++; $valConsD = substr($valConsD, $posConsD);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsD);
+                                   
 
                                     if ($tipoR == 'texto') {
                                         // dd($keyb);
