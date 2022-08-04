@@ -68,7 +68,7 @@ class GenerarPlanos extends Command
 
 
                 if (count($array) > 0) {
-
+                    // dd($array);
                     foreach ($array as $keyb => $valueB) {                  
 
                         // dd($keyb);
@@ -147,23 +147,40 @@ class GenerarPlanos extends Command
                                     $longitudR = Funciones::ReplaceText($longitud[$suma]);
                                     
 
+                                    // $keyb / 6 = PEDIDO, 7 = DESPACHADO, 9 = VALOR
+
+                                    $valConsA = Funciones::caracterEspecial($array[2]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
+
+                                    $valConsB = Funciones::caracterEspecial($array[3]); $valConsB = Funciones::caracterEspecialSimbol($valConsB); $posConsB = strpos($valConsB, ':'); $posConsB++; $valConsB = substr($valConsB, $posConsB);  $cons_CODIGO_CLIENTE = Funciones::ReplaceText($valConsB);
+
+                                    $valConsC = Funciones::caracterEspecial($array[4]); $valConsC = Funciones::caracterEspecialSimbol($valConsC); $posConsC = strpos($valConsC, ':'); $posConsC++; $valConsC = substr($valConsC, $posConsC);  $cons_ZONA = Funciones::ReplaceText($valConsC);
+
+                                    $valConsD = Funciones::caracterEspecial($array[5]); $valConsD = Funciones::caracterEspecialSimbol($valConsD); $posConsD = strpos($valConsD, ':'); $posConsD++; $valConsD = substr($valConsD, $posConsD);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsD);
+
                                     if ($tipoR == 'texto') {
-                                        if ($keyb == "PEDIDO") {
-                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('PEDIDO');
-                                        }else if ($keyb == "DESPACHADO") {
-                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('DESPACHADO');
-                                        }else if ($keyb == "VALOR") {
-                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('VALOR');
+                                        // dd($keyb);
+                                        if ($keyb == 6) { 
+                                            // dd($cons_FECHA);
+                                            $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('PEDIDO');
+                                           
+                                            
+                                        }else if ($keyb == 7) {
+                                            $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('DESPACHADO');
+                                        }else if ($keyb == 9) {
+                                            $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('VALOR');
                                         }
                                         $dataResplan = substr($valueB, 0, $longitudR);
                                         $dataPlan .= "".$consPlano['entre_columna'].str_pad($dataResplan, 0).$consPlano['entre_columna'].$separadorPlan;
                                     }else{ 
-                                        if ($keyb == "PEDIDO") {
-                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('PEDIDO');
-                                        }else if ($keyb == "DESPACHADO") {
-                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('DESPACHADO');
-                                        }else if ($keyb == "VALOR") {
-                                            $valueB = $consTabla->where('FECHA', $keyb['FECHA'])->where('CODIGO_CLIENTE', $keyb['CODIGO_CLIENTE'])->where('ZONA', $keyb['ZONA'])->where('CODIGO_PRODUCTO', $keyb['CODIGO_PRODUCTO'])->sum('VALOR');
+                                        // dd($keyb);
+                                        if ($keyb == 6) {
+
+                                            $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('PEDIDO');
+                                           
+                                        }else if ($keyb == 7) {
+                                            $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('DESPACHADO');
+                                        }else if ($keyb == 9) {
+                                            $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('VALOR');
                                         }
                                         $dataPlan .= $valueB.$separadorPlan; 
                                     }
