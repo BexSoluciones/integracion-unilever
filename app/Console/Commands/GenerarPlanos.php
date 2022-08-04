@@ -11,6 +11,8 @@ use App\Modelo\Formato;
 use App\Modelo\PlanoFuncion;
 use App\Modelo\CampoQuemado;
 
+use App\Modelo\TablaVentas;
+
 class GenerarPlanos extends Command
 {
     protected $signature = 'integracion:generar-planos';
@@ -33,7 +35,7 @@ class GenerarPlanos extends Command
             if ($value->group_by == '') {
                 // $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
                 if (trim($value->tabla_destino) === "tbl_ws_union_ventas") {
-                    $resCons = $consTabla->select('codigo', 'ID_DISTRIBUIDOR', 'FECHA', 'CODIGO_CLIENTE', 'ZONA', 'CODIGO_PRODUCTO', "SUM(PEDIDO) as PEDIDO", "SUM(DESPACHADO) as DESPACHADO", 'CAMBIOS','VALOR','IVA')->where('planoRegistro',0)->groupBy('FECHA','CODIGO_CLIENTE','ZONA','CODIGO_PRODUCTO')->orderBy($value->orderBy,$value->orderType)->get();
+                    $resCons = TablaVentas::selectRaw('codigo', 'ID_DISTRIBUIDOR', 'FECHA', 'CODIGO_CLIENTE', 'ZONA', 'CODIGO_PRODUCTO', "SUM(PEDIDO) as PEDIDO", "SUM(DESPACHADO) as DESPACHADO", 'CAMBIOS','VALOR','IVA')->where('planoRegistro',0)->groupBy('FECHA','CODIGO_CLIENTE','ZONA','CODIGO_PRODUCTO')->orderBy($value->orderBy,$value->orderType)->get();
                     // dd($value->tabla_destino);
                     echo "=> #1 \n";
                 }else{
