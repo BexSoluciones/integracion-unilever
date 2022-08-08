@@ -217,13 +217,14 @@ class Funciones extends Model {
             } 
 
             if ($ftp === 1) {
-                $exist = Storage::disk('ftp')->exists($nombreFile); 
-                if (!empty($exist)) {
-                    $dataPlan = Storage::disk('ftp')->get($nombreFile); $dataPlan .= $plano;
-                    Storage::disk('ftp')->put($nombreFile, $dataPlan); 
-                }else{
-                    Storage::disk('ftp')->put($nombreFile, $plano); 
-                }
+                Storage::disk('ftp')->put($nombreFile, $plano); 
+                // $exist = Storage::disk('ftp')->exists($nombreFile); 
+                // if (!empty($exist)) {
+                //     $dataPlan = Storage::disk('ftp')->get($nombreFile); $dataPlan .= $plano;
+                //     Storage::disk('ftp')->put($nombreFile, $dataPlan); 
+                // }else{
+                //     Storage::disk('ftp')->put($nombreFile, $plano); 
+                // }
             }
 
             if ($sftp === 1) { 
