@@ -55,11 +55,11 @@ class GenerarZip extends Command
 
 		if ($resultado) {
 		    echo "=> Archivo creado \n";
-		    // if (Storage::disk('ftp')->put($nombreZipFTP, file_get_contents($nombreArchivoZip))) {
-		    // 	echo "=> Subio el archivo FTP \n";
-		    // }else{
-		    // 	echo "=> Hubo un problema al subir archivo FTP \n";
-		    // }
+		    if (Storage::disk('ftp')->put($nombreZipFTP, file_get_contents($nombreArchivoZip))) {
+		    	echo "=> Subio el archivo FTP \n";
+		    }else{
+		    	echo "=> Hubo un problema al subir archivo FTP \n";
+		    }
 		} else {
 		    echo "Error creando archivo\n";
 		}
