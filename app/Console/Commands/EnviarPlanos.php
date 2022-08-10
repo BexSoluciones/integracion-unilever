@@ -31,13 +31,13 @@ class EnviarPlanos extends Command
 	        $gestor = opendir($ruta);
 	        while (($archivo = readdir($gestor)) !== false)  {	                
                 echo "ARCHIVO: ".$archivo." \n";
-	            $ruta_completa = $ruta . "/" . $archivo;
-	            $ruta_completa_nueva = $ruta_enviado . "/" . $archivo;
-	            if ($archivo != "." && $archivo != "..") {
-	                rename($ruta_completa, $ruta_completa_nueva);
-	            }else{
-                    echo "NO SE ENCONTRO ARCHIVOS \n";
-                }
+	            // $ruta_completa = $ruta . "/" . $archivo;
+	            // $ruta_completa_nueva = $ruta_enviado . "/" . $archivo;
+	            // if ($archivo != "." && $archivo != "..") {
+	            //     rename($ruta_completa, $ruta_completa_nueva);
+	            // }else{
+             //        echo "NO SE ENCONTRO ARCHIVOS \n";
+             //    }
 	        }
 	        closedir($gestor);
 	    }else{
