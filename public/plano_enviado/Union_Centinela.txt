@@ -1,0 +1,9 @@
+86|Union_Zonas|10|2022-07-25
+86|Union_Ventas|30498|2022-07-25
+86|Union_Tipologias|1|2022-07-25
+86|Union_Rutas|2554|2022-07-25
+86|Union_Inventarios|168|2022-07-25
+86|Union_Productos|168|2022-07-25
+86|Union_Devoluciones|5716|2022-07-25
+86|Union_Clientes|924|2022-07-25
+86|Union_Ciudades|15|2022-07-25
