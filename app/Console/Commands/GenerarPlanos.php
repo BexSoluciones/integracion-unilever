@@ -34,7 +34,7 @@ class GenerarPlanos extends Command
 
             if ($value->group_by == '') {
                 // $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
-                if (trim($value->tabla_destino) === "tbl_ws_union_ventas") {
+                if (trim($value->tabla_destino) === "tbl_ws_union_ventass") {
                     $resCons = TablaVentas::selectRaw('codigo, ID_DISTRIBUIDOR, FECHA, CODIGO_CLIENTE, ZONA, CODIGO_PRODUCTO, SUM(PEDIDO) as PEDIDO, SUM(DESPACHADO) as DESPACHADO, CAMBIOS, VALOR, IVA, consecutivo_factura, planoRegistro, created_at, updated_at')->where('planoRegistro',0)->groupBy('FECHA','CODIGO_CLIENTE','ZONA','CODIGO_PRODUCTO')->orderBy($value->orderBy,$value->orderType)->get();
                     // dd($value->tabla_destino);
                     echo "=> #1 \n";
@@ -43,7 +43,7 @@ class GenerarPlanos extends Command
                     echo "=> #2 \n";
                 }
             }else{
-                if (trim($value->tabla_destino) === "tbl_ws_union_ventas") {
+                if (trim($value->tabla_destino) === "tbl_ws_union_ventass") {
                     $resCons = $consTabla->where('planoRegistro',0)->groupBy('FECHA','CODIGO_CLIENTE','ZONA','CODIGO_PRODUCTO')->orderBy($value->orderBy,$value->orderType)->get();
                     echo "=> #3 \n";
                 }else{
