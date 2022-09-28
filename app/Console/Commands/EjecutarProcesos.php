@@ -31,8 +31,10 @@ class EjecutarProcesos extends Command
         }
 
         Artisan::call('integracion:verificar-tipo-documento'); // CONSULTA INVENTARIO EN BODEGAS DE LOS PRODUCTOS DE PEDIDOS APROBADOS 
-
+ 
         Artisan::call('integracion:guardar-informacion'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
+		
+		Artisan::call('integracion:sum-productos tbl_ws_union_ventas'); // SUMA PRODUCTOS DE LA TABLA VENTAS QUE CUMPLAN LOS CRITERIOS
 
         Artisan::call('integracion:generar-planos'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
 
