@@ -21,7 +21,10 @@ class GuardarInformacion extends Command
     public function handle(){
 
         //OBTIENE LISTA DE CONEXION & CONSULTAS REGISTRADAS QUE ESTEN EN ESTADO 1
-        $dataConexion = Conexion::where('estado',1)->first(); $listaConsulta = Consulta::where('estado',1)->orderBy('codigo','asc')->get(); $resultado = array(); LogTable::truncate(); 
+        $dataConexion = Conexion::where('estado',1)->first(); 
+        $listaConsulta = Consulta::where('estado',1)->orderBy('codigo','asc')->get(); 
+        $resultado = array(); 
+        LogTable::truncate(); 
 
         //RECORRE LISTA DE CONSULTAS REGISTRADAS
         foreach ($listaConsulta as $value) {
@@ -32,19 +35,31 @@ class GuardarInformacion extends Command
             ConsultaConsecutivo::where('consulta',$value->codigo)->where('consecutivo_b','>',0)->update(['consecutivo_b' => 1]);
             $consecutivosTabla = ConsultaConsecutivo::where('consulta',$value->codigo)->get();
 
-            $consTabla = new Tabla; $consTabla->getTable(); $consTabla->bind($value->tabla_destino); 
+            $consTabla = new Tabla; 
+            $consTabla->getTable(); 
+            $consTabla->bind($value->tabla_destino);
 
             // VERIFICA SI TRUNCATE ESTA ACTIVADO EN LA CONFIG DE CONSULTA
             if ($value->truncate == '1') { 
-                $consTabla->truncate();  // BORRA REGISTROS PREVIOS DE TABLA CONSULTADA
-                //ACTUALIZA EN 1 EL COMIENZO DE CONSECUTIVOS DE LA CONSULTA PARA EMPEZAR BUSQUEDA DESDE 1
-                ConsultaConsecutivo::where('consulta',$value->codigo)->where('consecutivo','>',0)->update(['consecutivo' => 1]);
-                ConsultaConsecutivo::where('consulta',$value->codigo)->where('consecutivo_b','>',0)->update(['consecutivo_b' => 1]);
-            }
-            
+                $consTabla->truncate();  // BORRA REGISTROS PREVIOS DE TABLA CONSULTADA   
+            } 
+            $busqueda_alterna = false; 
             $dataTableReg = $consTabla->get();
 
-            //RECORREMOS CADA UNO DE LOS TIPOS DE CONSECUTIVOS QUE TENGA CADA CONSULTA
+            //REMPLAZA PARAMETROS QUE TENGA LA SENTENCIA "@.." POR LOS PARAMETROS CORRESPONDIENTES EN LA TABLA DE CONSULTAS
+            $sentencia = Funciones::ParametroSentencia($value,$dataConexion,false,$busqueda_alterna,null);
+            
+            //CONSTRUCTOR DE XML PARA CONSULTAR POR SOAP 
+            $xml = Funciones::consultaStructuraXML($dataConexion->conexion,$dataConexion->cia,$dataConexion->proveedor,$dataConexion->usuario,$dataConexion->clave,$sentencia,$dataConexion->consulta,1,0);
+
+            //RESULTADO DATOS CONSULTA SOAP
+            $datos = Funciones::SOAP_SAVE($dataConexion->url, $xml, $value->tabla_destino);
+            $resultado = Funciones::SOAP($dataConexion->url, $xml, $value->tabla_destino);
+
+            
+            Log::info([$datos, $resultado]);
+            dd([$datos, $resultado]);
+            // dd();
             foreach ($consecutivosTabla as $consecutivoValue) {
 
                 //DECLARACION DE VARIABLES PARA POSTERIOR USO EN EL RECORRIDO DE DATOS CONSULTADOS SOAP
@@ -78,7 +93,7 @@ class GuardarInformacion extends Command
                         if (is_array($resultado) && is_array($datos)) { 
                             echo "<br>================= $value->tabla_destino ================================<br>\n"; 
                             
-                            //CONSULTA LISTA DE CONDICIONES PARA VALIDACION Y PASAR A REGISTRO
+                            //CONSULTA LISTA DE CONDICIONES PARA VALIDACION Y PASAR A REGISTRO no se hace
                             $condicionRegistro = ConsultaCondicion::where('id_consulta',$value->codigo)->first();  
 
                             //RECORRE RESULTADO DE DATOS ARROJADOS EN LA CONSULTA SOAP
@@ -152,9 +167,6 @@ class GuardarInformacion extends Command
                                     }else{
                                         echo "ESTE DATO NO SE ENCUENTRA REGISTRADA EN LA TABLA [ $value->tabla_destino ] <br> \n";
                                     }      
-
-                                    // dd($coincidenciaCons);
-
                                 }else{ 
                                     echo "NO TIENE CONDICIÓN <br>"; 
                                 }
