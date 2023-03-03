@@ -176,7 +176,7 @@ class Funciones extends Model {
 
     public static function fechaConsulta($type){
         if ($type == "inicio") {
-            return date("Y")."-".date("m")."-01";
+            return date('Y-m-d',strtotime('-2 day',strtotime(date('Y-m-d'))));
         }else{
             return date("Y-m-d");
         }
@@ -328,8 +328,13 @@ class Funciones extends Model {
         do{
             try {
                 $client = new \SoapClient($url, $parametro);
-                $result = $client->EjecutarConsultaXML($parametro)->EjecutarConsultaXMLResult->any; $any = simplexml_load_string($result);
-                if (@is_object($any->NewDataSet->Resultado)) { return Funciones::convertirObjetosArrays($any->NewDataSet->Resultado); }else{ $terminar = 0; }
+                $result = $client->EjecutarConsultaXML($parametro)->EjecutarConsultaXMLResult->any; 
+                $any = simplexml_load_string($result);
+                if (@is_object($any->NewDataSet->Resultado)) { 
+                    return Funciones::convertirObjetosArrays($any->NewDataSet->Resultado); 
+                }else{ 
+                    $terminar = 0; 
+                }
 
                 if (@$any->NewDataSet->Table) {
                     foreach ($any->NewDataSet->Table as $key => $value) {
@@ -357,8 +362,13 @@ class Funciones extends Model {
         do{
             try {
                 $client = new \SoapClient($url, $parametro);
-                $result = $client->EjecutarConsultaXML($parametro)->EjecutarConsultaXMLResult->any; $any = simplexml_load_string($result);
-                if (@is_object($any->NewDataSet->Resultado)) { return Funciones::convertirObjetosArraysWS($any->NewDataSet->Resultado,$table); }else{ $terminar = 0; }
+                $result = $client->EjecutarConsultaXML($parametro)->EjecutarConsultaXMLResult->any; 
+                $any = simplexml_load_string($result);
+                if (@is_object($any->NewDataSet->Resultado)) { 
+                    return Funciones::convertirObjetosArraysWS($any->NewDataSet->Resultado,$table); 
+                }else{ 
+                    $terminar = 0; 
+                }
                 if (@$any->NewDataSet->Table) {
                     foreach ($any->NewDataSet->Table as $key => $value) {
                         echo ("\n");

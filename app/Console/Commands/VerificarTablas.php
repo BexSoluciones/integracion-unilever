@@ -11,7 +11,7 @@ use App\Modelo\Funciones;
 use App\Modelo\ConsultaConsecutivo;
 use App\Modelo\Tabla;
 use App\Modelo\LogTable;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class VerificarTablas extends Command
 {
