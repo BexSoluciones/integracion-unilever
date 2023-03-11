@@ -65,11 +65,12 @@ class Funciones extends Model {
             $arrayValuesRow = [];
             foreach ($objeto as $keyb => $valores) {
                 $value = ltrim($valores); $value = rtrim($valores);
-                if ($value != '') {
-                    $arrayValuesRow[(String) $keyb] = (String) "'".htmlspecialchars($value)."'";
-                }else{
-                    $arrayValuesRow[(String) $keyb] = (String) "NO";
-                }
+                $arrayValuesRow[(String) $keyb] = (String) "'".htmlspecialchars($value)."'";
+                // if ($value != '') {
+                //     $arrayValuesRow[(String) $keyb] = (String) "'".htmlspecialchars($value)."'";
+                // }else{
+                //     $arrayValuesRow[(String) $keyb] = (String) "NO";
+                // }
             }
             $arrayValues[$acumValues] = (array) $arrayValuesRow;
             $acumValues++;
@@ -87,11 +88,12 @@ class Funciones extends Model {
                     foreach ($objeto as $keyc => $valores) {
                         if ($column == $keyc) { 
                             $srhColumn = true; $value = ltrim($valores); $value = rtrim($valores);
-                            if ($value != '') {
-                                $data[$sum][$column] = htmlspecialchars($value);
-                            }else{
-                                $data[$sum][$column] = "NO"; 
-                            }
+                            $data[$sum][$column] = htmlspecialchars($value);
+                            // if ($value != '') {
+                                // $data[$sum][$column] = htmlspecialchars($value);
+                            // }else{
+                            //     $data[$sum][$column] = "NO"; 
+                            // }
                         }                  
                     }
                     if ($srhColumn == false) { $data[$sum][$column] = "NO"; }
