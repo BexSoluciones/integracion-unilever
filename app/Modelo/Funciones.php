@@ -140,6 +140,7 @@ class Funciones extends Model {
             $name .= $consTabla[$consPlan[1]];
         }else{ $name .= $consPlano['seccion_default']; }
 
+        $name .= date("Ymd");
         $name .= $consPlano['extension'];
 
         return $name;
@@ -424,12 +425,13 @@ class Funciones extends Model {
     }
 
     public static function caracterEspecial($val){
-        $char = str_replace(['\u00f1','\u00e1','\u00e9','\u00ed','\u00f3','\u00fa','\u00c1','\u00c9','\u00cd','\u00d3','\u00da','\u00d1','&amp;'], ['ñ','á','é','í','ó','ú','Á','É','Í','Ó','Ú','Ñ','&'], $val);
+        // print_r($val);
+        $char = str_replace(['\u00f1','\u00e1','\u00e9','\u00ed','\u00f3','\u00fa','\u00c1','\u00c9','\u00cd','\u00d3','\u00da','\u00d1','&amp;','Ã¡'], ['ñ','á','é','í','ó','ú','Á','É','Í','Ó','Ú','Ñ','&','á'], $val);
         return $char;
     }
 
     public static function caracterEspecialSimbol($val){
-        $char = str_replace(['ñ','Ñ',"'",'?','/','*','¡','¿','[',']','{','}','^','¬','|','°','!','"','$','%','&','(',')','=',',','.','_','>','<','@'], ['n','N',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '], $val);
+        $char = str_replace(['ñ','Ñ',"'",'?','/','*','¡','¿','[',']','{','}','^','¬','|','°','!','"','$','%','&','(',')','=',',','_','>','<','@'], ['n','N',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '], $val);
         return $char;
     }
 
