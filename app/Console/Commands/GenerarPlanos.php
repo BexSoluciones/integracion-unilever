@@ -34,9 +34,8 @@ class GenerarPlanos extends Command
 
             if ($value->group_by == '') {
                 // $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
-                if (trim($value->tabla_destino) === "tbl_ws_union_ventass") {
-                    $resCons = TablaVentas::selectRaw('codigo, ID_DISTRIBUIDOR, FECHA, CODIGO_CLIENTE, ZONA, CODIGO_PRODUCTO, SUM(PEDIDO) as PEDIDO, SUM(DESPACHADO) as DESPACHADO, CAMBIOS, VALOR, IVA, consecutivo_factura, planoRegistro, created_at, updated_at')->where('planoRegistro',0)->groupBy('FECHA','CODIGO_CLIENTE','ZONA','CODIGO_PRODUCTO')->orderBy($value->orderBy,$value->orderType)->get();
-                    // dd($value->tabla_destino);
+                if (trim($value->tabla_destino) === "tbl_ws_union_ventas") {
+                    $resCons = TablaVentas::selectRaw('codigo, Nit_Distribuidor, Factura_Numero, Factura_Fecha_Movimiento, Prod_Dist_Cod, Prod_Dist_Desc, Prod_Prov_Cod, Cant_Vendida, Prod_UnidadVenta, Precio_Unit, Precio_Total, Costo, Descuento, Transaccion_Codigo, Transaccion_Descripcion, CausalTransaccion_Codigo, CausalTransaccion_Descripccion, Vend_Cedula, Vend_Nombre, Vend_Tel, Vend_Dir, Cliente_Cod, Cliente_Nombre, Cliente_Dir, Cliente_Tel, Cliente_FechaCrea, Cliente_FechaDesact, Cliente_Periodicidad, Cliente_RutaCod, Cliente_RutaDesc, Cliente_MunCod, Cliente_MunDesc, Sup_Cedula, Sup_Nombre, Sup_Dir, Sup_Tel, Cliente_CanalCod, Cliente_CanalDesc, Cliente_DeptoCod, Cliente_DeptoDesc, Prov_Cod, Prov_Desc, Cliente_SectorCod, Cliente_SectorDesc, Factura_Estado, PlanComercial_Cod, PlanComercial_Desc, Cliente_SubCanalCod, Cliente_SubCanalDesc, Agencia_Cod, Agencia_Desc, Bodega_Cod, Bodega_Desc, Cliente_GPS_Lat, Cliente_GPS_Long, Factura_GPS_Lat, Factura_GPS_Long, Cliente_Barrio, Cliente_Contacto_Nombre, Ventas_FechaGeneracion')->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
                     echo "=> #1 \n";
                 }else{
                     $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
@@ -54,8 +53,11 @@ class GenerarPlanos extends Command
 
             // dd($resCons);
 
-            $dataPlan = null; $name_us = null; $sumR = 0;
+            $dataPlan = null; 
+            $name_us = null; 
+            $sumR = 0;
             foreach ($resCons as $keya => $valueA) {                
+
 
                 // unset($valueA['codigo']);
                 // unset($valueA['consecutivo_factura']);
@@ -65,21 +67,23 @@ class GenerarPlanos extends Command
                 
                 echo "===> DATA: $sumR  \n";
 
-                $suma = 0; $array = explode(",", $valueA); $totalExpl = count($array) - 2;
+                $suma = 0; 
+                $array = explode(",", $valueA); 
+                // $totalExpl = count($array) - 2;
                 if ($consPlano['display_codigo'] == 0) { $sum = 1; }else{ $sum = 2; }    
 
-
                 if (count($array) > 0) {
-                    // dd($array);
-
-                    $valConsA = Funciones::caracterEspecial($array[2]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
-
-                    $valConsB = Funciones::caracterEspecial($array[3]); $valConsB = Funciones::caracterEspecialSimbol($valConsB); $posConsB = strpos($valConsB, ':'); $posConsB++; $valConsB = substr($valConsB, $posConsB);  $cons_CODIGO_CLIENTE = Funciones::ReplaceText($valConsB);
-
-                    $valConsC = Funciones::caracterEspecial($array[4]); $valConsC = Funciones::caracterEspecialSimbol($valConsC); $posConsC = strpos($valConsC, ':'); $posConsC++; $valConsC = substr($valConsC, $posConsC);  $cons_ZONA = Funciones::ReplaceText($valConsC);
-
-                    $valConsD = Funciones::caracterEspecial($array[5]); $valConsD = Funciones::caracterEspecialSimbol($valConsD); $posConsD = strpos($valConsD, ':'); $posConsD++; $valConsD = substr($valConsD, $posConsD);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsD);
-
+                    // Log::info($array);
+                    if (trim($value->tabla_destino) === "tbl_ws_union_ventas") {
+                        $valConsA = Funciones::caracterEspecial($array[4]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
+                        $valConsB = Funciones::caracterEspecial($array[17]); $valConsB = Funciones::caracterEspecialSimbol($valConsB); $posConsB = strpos($valConsB, ':'); $posConsB++; $valConsB = substr($valConsB, $posConsB);  $cons_CODIGO_CLIENTE = Funciones::ReplaceText($valConsB);
+                        $valConsC = Funciones::caracterEspecial($array[21]); $valConsC = Funciones::caracterEspecialSimbol($valConsC); $posConsC = strpos($valConsC, ':'); $posConsC++; $valConsC = substr($valConsC, $posConsC);  $cons_ZONA = Funciones::ReplaceText($valConsC);
+                        $valConsD = Funciones::caracterEspecial($array[30]); $valConsD = Funciones::caracterEspecialSimbol($valConsD); $posConsD = strpos($valConsD, ':'); $posConsD++; $valConsD = substr($valConsD, $posConsD);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsD);
+                        $valConsE = Funciones::caracterEspecial($array[39]); $valConsE = Funciones::caracterEspecialSimbol($valConsE); $posConsE = strpos($valConsE, ':'); $posConsE++; $valConsE = substr($valConsE, $posConsE);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsE);
+                        $valConsF = Funciones::caracterEspecial($array[58]); $valConsF = Funciones::caracterEspecialSimbol($valConsF); $posConsF = strpos($valConsF, ':'); $posConsF++; $valConsF = substr($valConsF, $posConsF);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsF);
+                    }elseif(trim($value->tabla_destino) === "tbl_ws_union_inventarios") {
+                        $valConsA = Funciones::caracterEspecial($array[3]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
+                    }
                     foreach ($array as $keyb => $valueB) {                  
 
                         // dd($keyb);
@@ -90,8 +94,11 @@ class GenerarPlanos extends Command
 
                             $valueB = Funciones::caracterEspecial($valueB);
                             $valueB = Funciones::caracterEspecialSimbol($valueB);
-                            $campoDpl = true; $pos = strpos($valueB, ':'); $pos++;
-                            $valueB = substr($valueB, $pos); $valueB = Funciones::ReplaceText($valueB);
+                            $campoDpl = true; 
+                            $pos = strpos($valueB, ':'); 
+                            $pos++;
+                            $valueB = substr($valueB, $pos); 
+                            $valueB = Funciones::ReplaceText($valueB);
                 
                             $tipo = explode(",", $consFormato['tipo']); 
                             $longitud = explode(",", $consFormato['longitud']); 
