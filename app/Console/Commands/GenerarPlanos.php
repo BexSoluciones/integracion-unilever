@@ -35,7 +35,7 @@ class GenerarPlanos extends Command
             if ($value->group_by == '') {
                 // $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
                 if (trim($value->tabla_destino) === "tbl_ws_union_ventas") {
-                    $resCons = TablaVentas::selectRaw('codigo, Nit_Distribuidor, Factura_Numero, Factura_Fecha_Movimiento, Prod_Dist_Cod, Prod_Dist_Desc, Prod_Prov_Cod, Cant_Vendida, Prod_UnidadVenta, Precio_Unit, Precio_Total, Costo, Descuento, Transaccion_Codigo, Transaccion_Descripcion, CausalTransaccion_Codigo, CausalTransaccion_Descripccion, Vend_Cedula, Vend_Nombre, Vend_Tel, Vend_Dir, Cliente_Cod, Cliente_Nombre, Cliente_Dir, Cliente_Tel, Cliente_FechaCrea, Cliente_FechaDesact, Cliente_Periodicidad, Cliente_RutaCod, Cliente_RutaDesc, Cliente_MunCod, Cliente_MunDesc, Sup_Cedula, Sup_Nombre, Sup_Dir, Sup_Tel, Cliente_CanalCod, Cliente_CanalDesc, Cliente_DeptoCod, Cliente_DeptoDesc, Prov_Cod, Prov_Desc, Cliente_SectorCod, Cliente_SectorDesc, Factura_Estado, PlanComercial_Cod, PlanComercial_Desc, Cliente_SubCanalCod, Cliente_SubCanalDesc, Agencia_Cod, Agencia_Desc, Bodega_Cod, Bodega_Desc, Cliente_GPS_Lat, Cliente_GPS_Long, Factura_GPS_Lat, Factura_GPS_Long, Cliente_Barrio, Cliente_Contacto_Nombre, Ventas_FechaGeneracion')->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
+                    $resCons = TablaVentas::where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
                     echo "=> #1 \n";
                 }else{
                     $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
@@ -73,33 +73,41 @@ class GenerarPlanos extends Command
                 if ($consPlano['display_codigo'] == 0) { $sum = 1; }else{ $sum = 2; }    
 
                 if (count($array) > 0) {
-                    // Log::info($array);
-                    if (trim($value->tabla_destino) === "tbl_ws_union_ventas") {
-                        $valConsA = Funciones::caracterEspecial($array[4]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
-                        $valConsB = Funciones::caracterEspecial($array[17]); $valConsB = Funciones::caracterEspecialSimbol($valConsB); $posConsB = strpos($valConsB, ':'); $posConsB++; $valConsB = substr($valConsB, $posConsB);  $cons_CODIGO_CLIENTE = Funciones::ReplaceText($valConsB);
-                        $valConsC = Funciones::caracterEspecial($array[21]); $valConsC = Funciones::caracterEspecialSimbol($valConsC); $posConsC = strpos($valConsC, ':'); $posConsC++; $valConsC = substr($valConsC, $posConsC);  $cons_ZONA = Funciones::ReplaceText($valConsC);
-                        $valConsD = Funciones::caracterEspecial($array[30]); $valConsD = Funciones::caracterEspecialSimbol($valConsD); $posConsD = strpos($valConsD, ':'); $posConsD++; $valConsD = substr($valConsD, $posConsD);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsD);
-                        $valConsE = Funciones::caracterEspecial($array[39]); $valConsE = Funciones::caracterEspecialSimbol($valConsE); $posConsE = strpos($valConsE, ':'); $posConsE++; $valConsE = substr($valConsE, $posConsE);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsE);
-                        $valConsF = Funciones::caracterEspecial($array[58]); $valConsF = Funciones::caracterEspecialSimbol($valConsF); $posConsF = strpos($valConsF, ':'); $posConsF++; $valConsF = substr($valConsF, $posConsF);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsF);
-                    }elseif(trim($value->tabla_destino) === "tbl_ws_union_inventarios") {
-                        $valConsA = Funciones::caracterEspecial($array[3]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
+                    switch ($value->tabla_destino) {
+                        case 'tbl_ws_union_ventas':
+                            $valConsA = Funciones::caracterEspecial($array[4]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
+                            $valConsB = Funciones::caracterEspecial($array[17]); $valConsB = Funciones::caracterEspecialSimbol($valConsB); $posConsB = strpos($valConsB, ':'); $posConsB++; $valConsB = substr($valConsB, $posConsB);  $cons_CODIGO_CLIENTE = Funciones::ReplaceText($valConsB);
+                            $valConsC = Funciones::caracterEspecial($array[21]); $valConsC = Funciones::caracterEspecialSimbol($valConsC); $posConsC = strpos($valConsC, ':'); $posConsC++; $valConsC = substr($valConsC, $posConsC);  $cons_ZONA = Funciones::ReplaceText($valConsC);
+                            $valConsD = Funciones::caracterEspecial($array[30]); $valConsD = Funciones::caracterEspecialSimbol($valConsD); $posConsD = strpos($valConsD, ':'); $posConsD++; $valConsD = substr($valConsD, $posConsD);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsD);
+                            $valConsE = Funciones::caracterEspecial($array[39]); $valConsE = Funciones::caracterEspecialSimbol($valConsE); $posConsE = strpos($valConsE, ':'); $posConsE++; $valConsE = substr($valConsE, $posConsE);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsE);
+                            $valConsF = Funciones::caracterEspecial($array[58]); $valConsF = Funciones::caracterEspecialSimbol($valConsF); $posConsF = strpos($valConsF, ':'); $posConsF++; $valConsF = substr($valConsF, $posConsF);  $cons_CODIGO_PRODUCTO = Funciones::ReplaceText($valConsF);
+                            break;
+                        case 'tbl_ws_union_inventarios':
+                            // Log::info($array);
+                            $valConsA = Funciones::caracterEspecial($array[3]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
+                            break;
+                        case 'tbl_ws_union_clientes':
+                            $valConsA = Funciones::caracterEspecial($array[1]); $valConsA = Funciones::caracterEspecialSimbol($valConsA); $posConsA = strpos($valConsA, ':'); $posConsA++; $valConsA = substr($valConsA, $posConsA); $cons_FECHA = Funciones::ReplaceText($valConsA);
+                            $valConsB = Funciones::caracterEspecial($array[9]); $valConsB = Funciones::caracterEspecialSimbol($valConsB); $posConsB = strpos($valConsB, ':'); $posConsB++; $valConsB = substr($valConsB, $posConsB); $cons_FECHA = Funciones::ReplaceText($valConsB);
+                            break;
+                        default:
+                            # code...
+                            break;
                     }
                     foreach ($array as $keyb => $valueB) {                  
-
-                        // dd($keyb);
                         
-                        $dataLost = (count($array) - 3);
-
+                        $dataLost = (count($array) - 2);
                         if ($sum != 1 && $sum < $dataLost) {
 
                             $valueB = Funciones::caracterEspecial($valueB);
                             $valueB = Funciones::caracterEspecialSimbol($valueB);
+                            
                             $campoDpl = true; 
                             $pos = strpos($valueB, ':'); 
                             $pos++;
                             $valueB = substr($valueB, $pos); 
                             $valueB = Funciones::ReplaceText($valueB);
-                
+                            
                             $tipo = explode(",", $consFormato['tipo']); 
                             $longitud = explode(",", $consFormato['longitud']); 
                             
@@ -140,7 +148,6 @@ class GenerarPlanos extends Command
                             }
 
                             // echo "STATE B: $campoDpl <br>";
-
                             // CAMPOS QUEMADOS
                             if ($campoDpl == true) {
                                 foreach ($consCampoQuemado as $campoQuemado) {
@@ -155,7 +162,7 @@ class GenerarPlanos extends Command
                             }
 
                             // echo "STATE C: $campoDpl <br>";
-
+                                                        
                             if ($campoDpl == true) {
                                 // CAMPOS CONSULTA TABLA
                                 if ($suma >= count($tipo)) {
@@ -163,49 +170,25 @@ class GenerarPlanos extends Command
                                 }else{
                                     $tipoR = Funciones::ReplaceText($tipo[$suma]);  
                                     $longitudR = Funciones::ReplaceText($longitud[$suma]);
-                                    
-
-                                    // $keyb / 6 = PEDIDO, 7 = DESPACHADO, 9 = VALOR
-
-                                   
-
                                     if ($tipoR == 'texto') {
-                                        // dd($keyb);
-                                        // if ($keyb == 6) { 
-                                        //     // dd($cons_FECHA);
-                                        //     $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('PEDIDO');
-                                           
-                                            
-                                        // }else if ($keyb == 7) {
-                                        //     $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('DESPACHADO');
-                                        // }
                                         $dataResplan = substr($valueB, 0, $longitudR);
                                         $dataPlan .= "".$consPlano['entre_columna'].str_pad($dataResplan, 0).$consPlano['entre_columna'].$separadorPlan;
-                                    }else{ 
-                                        // dd($keyb);
-                                        // if ($keyb == 6) {
-
-                                        //     $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('PEDIDO');
-                                           
-                                        // }else if ($keyb == 7) {
-                                        //     $valueB = $consTabla->where('FECHA', $cons_FECHA)->where('CODIGO_CLIENTE', $cons_CODIGO_CLIENTE)->where('ZONA', $cons_ZONA)->where('CODIGO_PRODUCTO', $cons_CODIGO_PRODUCTO)->sum('DESPACHADO');
-                                        // }
+                                    }else{
                                         $dataPlan .= $valueB.$separadorPlan; 
                                     }
 
                                 }   
-                            }
-                                            
-                            
-                        } $sum++; $suma++;
+                            } 
+                        } 
+                        $sum++; $suma++;
                     }
                     // echo "<br>";
                     // echo "PLANO ANT FUNCTION: $dataPlan \n";
                     // echo "\n";
 
                     if ($consPlano['salto_linea'] == 1) { $dataPlan .= "\r\n"; }
-                }   $sumR++;
-
+                }   
+                $sumR++;
             }
 
             if ($dataPlan != null) {
@@ -214,11 +197,8 @@ class GenerarPlanos extends Command
                 $rutaFile = $consPlano['ruta'].$nombreFile; $dataPlan = str_replace('\/',"/", $dataPlan);
                 Funciones::crearTXT($dataPlan,$rutaFile,$nombreFile,$consPlano['ftp'],$consPlano['sftp']);
                 // $consTabla->where('planoRegistro',0)->update(['planoRegistro' => 1]);        
-            }        
-
+            }
         }
-
         $nombreFile = Funciones::NombreArchivo($consPlano); 
-
     }
 }
