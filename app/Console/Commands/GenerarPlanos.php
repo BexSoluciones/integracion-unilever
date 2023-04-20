@@ -12,6 +12,7 @@ use App\Modelo\PlanoFuncion;
 use App\Modelo\CampoQuemado;
 
 use App\Modelo\TablaVentas;
+use Illuminate\Support\Facades\Schema;
 
 class GenerarPlanos extends Command
 {
@@ -25,13 +26,13 @@ class GenerarPlanos extends Command
     public function handle(){
         $listaConsulta = Consulta::where('estado',1)->get();
         foreach ($listaConsulta as $value) {
-            
+            $headers = null;
             $consPlano = Plano::where('codigo',$value->id_plano)->first();
             $consPlanoFuncion = PlanoFuncion::where('id_consulta',$value->codigo)->get();
             $consCampoQuemado = CampoQuemado::where('id_consulta',$value->codigo)->get();
             $consFormato = Formato::where('id_consulta',$value->codigo)->first();
             $consTabla = new Tabla; $consTabla->getTable(); $consTabla->bind($value->tabla_destino); 
-
+            $headers = Schema::getColumnListing($value->tabla_destino);
             if ($value->group_by == '') {
                 // $resCons = $consTabla->where('planoRegistro',0)->orderBy($value->orderBy,$value->orderType)->get();
                 if (trim($value->tabla_destino) === "tbl_ws_union_ventas") {
@@ -56,6 +57,14 @@ class GenerarPlanos extends Command
             $dataPlan = null; 
             $name_us = null; 
             $sumR = 0;
+
+            // Encabezado
+            foreach ($headers as $key => $header) {
+                if ($header != 'codigo' && $header != 'planoRegistro' && $header != 'created_at' && $header != 'updated_at') {
+                    $dataPlan .= " ".$consPlano['entre_columna'].$header.$consPlano['entre_columna'].$consPlano['separador'];
+                }
+            }
+            $dataPlan .= "\r\n";
             foreach ($resCons as $keya => $valueA) {                
 
 

@@ -1,7 +1,7 @@
 /node_modules
 /public/hot
-/public/plano_enviado
-/public/plano
+public/plano_enviado/
+public/plano/
 /public/storage
 /storage/*.key
 /vendor
