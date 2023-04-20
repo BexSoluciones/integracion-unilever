@@ -22,10 +22,12 @@ class GenerarZip extends Command
     public function handle(){
         
         $zip = new ZipArchive();
-        $nombreZip = date("Ymd")."_"."D000086"; 
-        $nombreZipFTP = date("Ymd")."_"."D000086.zip"; 
-        $ruta = '/var/www/html/integracion-alpina-amovil/public/plano/';
-        $ruta_enviado = '/var/www/html/integracion-alpina-amovil/public/plano_enviado/';
+		$nombreZip = "CO-CBIA-DTR-0142_".date("Ymd");
+        $nombreZipFTP = "CO-CBIA-DTR-0142_".date("Ymd").".zip";  
+        $ruta = '/var/www/html/integracion-familia/public/plano/';
+        // $ruta = 'C:/laragon/www/integracion-familia/public/plano/';
+        // $ruta_enviado = 'C:/laragon/www/integracion-familia/public/plano_enviado/';
+        $ruta_enviado = '/var/www/html/integracion-familia/public/plano_enviado/';
         $nombreArchivoZip = $ruta.$nombreZip.".zip";
 
         if (!$zip->open($nombreArchivoZip, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
