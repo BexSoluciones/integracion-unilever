@@ -61,7 +61,11 @@ class GenerarPlanos extends Command
             // Encabezado
             foreach ($headers as $key => $header) {
                 if ($header != 'codigo' && $header != 'planoRegistro' && $header != 'created_at' && $header != 'updated_at') {
-                    $dataPlan .= " ".$consPlano['entre_columna'].$header.$consPlano['entre_columna'].$consPlano['separador'];
+                    $dataPlan .= $consPlano['entre_columna'].$header.$consPlano['entre_columna'];
+                    
+                    if ($headers[$key + 1] != 'planoRegistro') {
+                        $dataPlan .= $consPlano['separador'];
+                    }
                 }
             }
             $dataPlan .= "\r\n";
@@ -147,7 +151,7 @@ class GenerarPlanos extends Command
                                         $buscarTabla = new Tabla; $buscarTabla->getTable(); $buscarTabla->bind($tablaBuscar['tabla_destino']); $resBusc = $buscarTabla->where($planoFuncion->nombre,$valueB)->first();     
                                         if ($planoFuncion->tipo == 'texto') {
                                             $dataResplan = substr($resBusc['codigo'], 0, $planoFuncion->longitud);
-                                            $dataPlan .= " ".$consPlano['entre_columna'].str_pad($dataResplan, $planoFuncion->longitud).$consPlano['entre_columna'].$separadorPlan;
+                                            $dataPlan .= $consPlano['entre_columna'].str_pad($dataResplan, $planoFuncion->longitud).$consPlano['entre_columna'].$separadorPlan;
                                         }else{ $dataPlan .= $resBusc['codigo'].$separadorPlan; }
                                     }else{
                                         $dataPlan .= Funciones::condicionPlano($planoFuncion,$valueB,$name_us,$consPlano);
@@ -164,7 +168,7 @@ class GenerarPlanos extends Command
                                         $campoDpl = false; // echo "$campoQuemado";
                                         if ($campoQuemado->tipo == 'texto') {
                                             $dataResplan = substr($campoQuemado->valor, 0, $campoQuemado->longitud);
-                                            $dataPlan .= " ".$consPlano['entre_columna'].str_pad($dataResplan, $campoQuemado->longitud).$consPlano['entre_columna'].$separadorPlan;
+                                            $dataPlan .= $consPlano['entre_columna'].str_pad($dataResplan, $campoQuemado->longitud).$consPlano['entre_columna'].$separadorPlan;
                                         }else{ $dataPlan .= $campoQuemado->valor.$separadorPlan; }
                                     }
                                 }
@@ -181,7 +185,7 @@ class GenerarPlanos extends Command
                                     $longitudR = Funciones::ReplaceText($longitud[$suma]);
                                     if ($tipoR == 'texto') {
                                         $dataResplan = substr($valueB, 0, $longitudR);
-                                        $dataPlan .= "".$consPlano['entre_columna'].str_pad($dataResplan, 0).$consPlano['entre_columna'].$separadorPlan;
+                                        $dataPlan .= $consPlano['entre_columna'].str_pad($dataResplan, 0).$consPlano['entre_columna'].$separadorPlan;
                                     }else{
                                         $dataPlan .= $valueB.$separadorPlan; 
                                     }
@@ -202,7 +206,7 @@ class GenerarPlanos extends Command
 
             if ($dataPlan != null) {
                 $nombreFile = Funciones::NombreArchivo($consPlano); 
-                //$rutaFile = "public/plano/".$nombreFile; 
+                //$rutaFile = "public/plano/".$nombreFile;
                 $rutaFile = $consPlano['ruta'].$nombreFile; $dataPlan = str_replace('\/',"/", $dataPlan);
                 Funciones::crearTXT($dataPlan,$rutaFile,$nombreFile,$consPlano['ftp'],$consPlano['sftp']);
                 // $consTabla->where('planoRegistro',0)->update(['planoRegistro' => 1]);        

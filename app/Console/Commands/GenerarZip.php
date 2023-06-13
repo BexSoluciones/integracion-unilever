@@ -24,10 +24,10 @@ class GenerarZip extends Command
         $zip = new ZipArchive();
 		$nombreZip = "CO-CBIA-DTR-0142_".date("Ymd");
         $nombreZipFTP = "CO-CBIA-DTR-0142_".date("Ymd").".zip";  
-        $ruta = '/var/www/html/integracion-familia/public/plano/';
+        $ruta = '/var/www/html/integracion-familia/public/plano';
         // $ruta = 'C:/laragon/www/integracion-familia/public/plano/';
         // $ruta_enviado = 'C:/laragon/www/integracion-familia/public/plano_enviado/';
-        $ruta_enviado = '/var/www/html/integracion-familia/public/plano_enviado/';
+        $ruta_enviado = '/var/www/html/integracion-familia/public/plano_enviado';
         $nombreArchivoZip = $ruta.$nombreZip.".zip";
 
         if (!$zip->open($nombreArchivoZip, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
