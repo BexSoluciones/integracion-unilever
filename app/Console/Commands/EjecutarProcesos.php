@@ -17,7 +17,7 @@ class EjecutarProcesos extends Command
 
     public function handle(){
 
-        echo "=====> [ EJECUTANDO PROCESO FAMILIA ] <=====";
+        echo "=====> [ EJECUTANDO PROCESO UNILEVER ] <=====";
 
         $fechaInicio = Funciones::fechaConsulta("inicio");
         $fechaFin = Funciones::fechaConsulta("fin");
@@ -42,7 +42,7 @@ class EjecutarProcesos extends Command
 
         // Artisan::call('integracion:enviar-planos'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
         
-        Artisan::call('integracion:generar-zip'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
+        // Artisan::call('integracion:generar-zip'); // VERIFICA INVENTARIO MINIMO EN BODEGAS PARA REMISIONAR, MOVER INVENTARIO
         
 
     }  
