@@ -199,8 +199,8 @@ class GuardarInformacion extends Command
                 } else {
                     $busqueda_alterna = true;
                 }
-
-                echo "<br> DEFINIENDO BUCLE $stopWhile <br>\n";
+                // echo "<br> DEFINIENDO BUCLE $stopWhile <br>\n";
+                echo "<br> SIN DATOS PARA EXPORTAR EN: $value->tabla_destino <br>\n";
             }
 
 

@@ -179,7 +179,7 @@ class Funciones extends Model {
 
     public static function fechaConsulta($type){
         if ($type == "inicio") {
-            return date('Y-m-d',strtotime('-6 day',strtotime(date('Y-m-d'))));
+            return date('Y-m-d',strtotime('-1 day',strtotime(date('Y-m-d'))));
         }else{
             return date("Y-m-d");
         }
